@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html>
+<head>
+    <title>All Applications - Job Portal</title>
+
+    <link rel="stylesheet" href="{% static 'jobapp/style.css' %}">
+</head>
+
+<body>
+
+    <div class="navbar">
+
+        <h2>Job Portal</h2>
+
+        <div>
+
+            <a href="/">
+                Jobs
+            </a>
+
+            <a href="{% url 'admin_applications' %}">
+                Applications
+            </a>
+
+            <form method="POST"
+                  action="{% url 'logout' %}"
+                  style="display: inline;">
+
+                {% csrf_token %}
+
+                <button type="submit">
+                    Logout
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <div class="container">
+
+        {% if messages %}
+
+            {% for message in messages %}
+
+                <div class="success-message">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+
+        <h1>All Applications</h1>
+
+
+        {% for application in applications %}
+
+            <div class="job-card">
+
+                <h2>
+                    {{ application.job.title }}
+                </h2>
+
+
+                <p>
+                    <strong>Applicant:</strong>
+                    {{ application.name }}
+                </p>
+
+
+                <p>
+                    <strong>Email:</strong>
+                    {{ application.email }}
+                </p>
+
+
+                <p>
+                    <strong>Company:</strong>
+                    {{ application.job.company }}
+                </p>
+
+
+                <p>
+                    <strong>Location:</strong>
+                    {{ application.job.location }}
+                </p>
+
+
+                <p>
+                    <strong>Applied On:</strong>
+                    {{ application.applied_at|date:"d M Y, h:i A" }}
+                </p>
+
+
+                <p>
+                    <strong>Current Status:</strong>
+
+                    {% if application.status == "Pending" %}
+
+                        <span class="status status-pending">
+                            Pending
+                        </span>
+
+                    {% elif application.status == "Shortlisted" %}
+
+                        <span class="status status-shortlisted">
+                            Shortlisted
+                        </span>
+
+                    {% elif application.status == "Rejected" %}
+
+                        <span class="status status-rejected">
+                            Rejected
+                        </span>
+
+                    {% else %}
+
+                        <span class="status">
+                            {{ application.status }}
+                        </span>
+
+                    {% endif %}
+
+                </p>
+
+
+                <br>
+
+
+                <a href="{% url 'admin_application_detail' application.id %}"
+                   class="btn">
+
+                    View Application Details
+
+                </a>
+
+
+                <br><br>
+
+
+                <form method="POST"
+                      action="{% url 'update_application_status' application.id %}">
+
+                    {% csrf_token %}
+
+                    <label>
+                        <strong>Change Status:</strong>
+                    </label>
+
+
+                    <select name="status">
+
+                        <option value="Pending"
+                            {% if application.status == "Pending" %}
+                                selected
+                            {% endif %}>
+
+                            Pending
+
+                        </option>
+
+
+                        <option value="Shortlisted"
+                            {% if application.status == "Shortlisted" %}
+                                selected
+                            {% endif %}>
+
+                            Shortlisted
+
+                        </option>
+
+
+                        <option value="Rejected"
+                            {% if application.status == "Rejected" %}
+                                selected
+                            {% endif %}>
+
+                            Rejected
+
+                        </option>
+
+                    </select>
+
+
+                    <button type="submit">
+                        Update Status
+                    </button>
+
+                </form>
+
+            </div>
+
+        {% empty %}
+
+            <div class="job-card">
+
+                <h2>No Applications</h2>
+
+                <p>
+                    There are currently no job applications.
+                </p>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+
+    <div class="footer">
+
+        Job Portal &copy; 2026
+
+    </div>
+
+</body>
+</html>

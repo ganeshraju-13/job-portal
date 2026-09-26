@@ -1,0 +1,30 @@
+# Virtual Environment
+venv/
+
+# Python Cache
+__pycache__/
+*.py[cod]
+
+# Django
+*.log
+db.sqlite3
+
+# Environment Variables
+.env
+
+# User Uploaded Files
+media/
+
+# Old files
+resumes/
+jobs/
+
+# Duplicate project folder
+config/config/
+
+# IDE
+.vscode/
+
+# Operating System
+.DS_Store
+Thumbs.db

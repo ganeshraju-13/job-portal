@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html>
+<head>
+    <title>Admin Dashboard - Job Portal</title>
+
+    <link rel="stylesheet" href="{% static 'jobapp/style.css' %}">
+</head>
+
+<body>
+
+    <div class="navbar">
+
+        <h2>Job Portal</h2>
+
+        <div>
+
+            <a href="/">
+                Jobs
+            </a>
+
+            <a href="{% url 'admin_dashboard' %}">
+                Dashboard
+            </a>
+
+            <a href="{% url 'admin_applications' %}">
+                Applications
+            </a>
+
+            <form method="POST"
+                  action="{% url 'logout' %}"
+                  style="display: inline;">
+
+                {% csrf_token %}
+
+                <button type="submit">
+                    Logout
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <div class="container">
+
+        <h1>Admin Dashboard</h1>
+
+
+        <div class="job-card">
+
+            <h2>Total Jobs</h2>
+
+            <p>
+                <strong>{{ total_jobs }}</strong>
+            </p>
+
+        </div>
+
+
+        <div class="job-card">
+
+            <h2>Total Applications</h2>
+
+            <p>
+                <strong>{{ total_applications }}</strong>
+            </p>
+
+        </div>
+
+
+        <div class="job-card">
+
+            <h2>Pending Applications</h2>
+
+            <p>
+                <strong>{{ pending_applications }}</strong>
+            </p>
+
+        </div>
+
+
+        <div class="job-card">
+
+            <h2>Shortlisted Applications</h2>
+
+            <p>
+                <strong>{{ shortlisted_applications }}</strong>
+            </p>
+
+        </div>
+
+
+        <div class="job-card">
+
+            <h2>Rejected Applications</h2>
+
+            <p>
+                <strong>{{ rejected_applications }}</strong>
+            </p>
+
+        </div>
+
+
+        <br>
+
+
+        <a href="{% url 'admin_applications' %}"
+           class="btn">
+
+            View All Applications
+
+        </a>
+
+
+        <a href="/"
+           class="btn">
+
+            Back to Jobs
+
+        </a>
+
+    </div>
+
+
+    <div class="footer">
+
+        Job Portal &copy; 2026
+
+    </div>
+
+</body>
+</html>

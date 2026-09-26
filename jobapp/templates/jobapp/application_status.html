@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html>
+<head>
+    <title>Application Status - Job Portal</title>
+
+    <link rel="stylesheet" href="{% static 'jobapp/style.css' %}">
+</head>
+
+<body>
+
+    <div class="navbar">
+
+        <h2>Job Portal</h2>
+
+        <div>
+
+            <a href="/">
+                Jobs
+            </a>
+
+            <a href="{% url 'my_applications' %}">
+                My Applications
+            </a>
+
+            <form method="POST"
+                  action="{% url 'logout' %}"
+                  style="display: inline;">
+
+                {% csrf_token %}
+
+                <button type="submit">
+                    Logout
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <div class="container">
+
+        <div class="form-card">
+
+            {% if messages %}
+
+                {% for message in messages %}
+
+                    <div class="success-message">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+
+            <h1>Application Status</h1>
+
+
+            <p>
+                <strong>Job:</strong>
+                {{ application.job.title }}
+            </p>
+
+
+            <p>
+                <strong>Applicant:</strong>
+                {{ application.name }}
+            </p>
+
+
+            <p>
+                <strong>Email:</strong>
+                {{ application.email }}
+            </p>
+
+
+            <hr>
+
+
+            <h2>Current Status</h2>
+
+
+            {% if application.status == "Pending" %}
+
+                <span class="status status-pending">
+                    Pending
+                </span>
+
+            {% elif application.status == "Shortlisted" %}
+
+                <span class="status status-shortlisted">
+                    Shortlisted
+                </span>
+
+            {% elif application.status == "Rejected" %}
+
+                <span class="status status-rejected">
+                    Rejected
+                </span>
+
+            {% else %}
+
+                <span class="status">
+                    {{ application.status }}
+                </span>
+
+            {% endif %}
+
+
+            <br><br>
+
+
+            <a href="/" class="btn">
+                ← Back to Jobs
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer">
+        Job Portal &copy; 2026
+    </div>
+
+</body>
+</html>

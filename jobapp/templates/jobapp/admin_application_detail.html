@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html>
+<head>
+    <title>Application Details - Job Portal</title>
+
+    <link rel="stylesheet" href="{% static 'jobapp/style.css' %}">
+</head>
+
+<body>
+
+    <div class="navbar">
+
+        <h2>Job Portal</h2>
+
+        <div>
+
+            <a href="/">
+                Jobs
+            </a>
+
+            <a href="{% url 'admin_applications' %}">
+                Applications
+            </a>
+
+            <form method="POST"
+                  action="{% url 'logout' %}"
+                  style="display: inline;">
+
+                {% csrf_token %}
+
+                <button type="submit">
+                    Logout
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <div class="container">
+
+        {% if messages %}
+
+            {% for message in messages %}
+
+                <div class="success-message">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+
+        <div class="form-card">
+
+            <h1>Application Details</h1>
+
+
+            <h2>Job Information</h2>
+
+            <p>
+                <strong>Job Title:</strong>
+                {{ application.job.title }}
+            </p>
+
+            <p>
+                <strong>Company:</strong>
+                {{ application.job.company }}
+            </p>
+
+            <p>
+                <strong>Location:</strong>
+                {{ application.job.location }}
+            </p>
+
+
+            <hr>
+
+
+            <h2>Applicant Information</h2>
+
+            <p>
+                <strong>Name:</strong>
+                {{ application.name }}
+            </p>
+
+            <p>
+                <strong>Email:</strong>
+                {{ application.email }}
+            </p>
+
+
+            <hr>
+
+
+            <h2>Application Information</h2>
+
+            <p>
+                <strong>Applied On:</strong>
+                {{ application.applied_at|date:"d M Y, h:i A" }}
+            </p>
+
+            <p>
+                <strong>Status:</strong>
+
+                {% if application.status == "Pending" %}
+
+                    <span class="status status-pending">
+                        Pending
+                    </span>
+
+                {% elif application.status == "Shortlisted" %}
+
+                    <span class="status status-shortlisted">
+                        Shortlisted
+                    </span>
+
+                {% elif application.status == "Rejected" %}
+
+                    <span class="status status-rejected">
+                        Rejected
+                    </span>
+
+                {% endif %}
+
+            </p>
+
+
+            <hr>
+
+
+            <h2>Cover Letter</h2>
+
+            <p>
+                {{ application.cover_letter }}
+            </p>
+
+
+            <hr>
+
+
+            <h2>Resume</h2>
+
+            <p>
+                <a href="{{ application.resume.url }}"
+                   class="btn"
+                   target="_blank">
+
+                    View / Download Resume
+
+                </a>
+            </p>
+
+
+            <br>
+
+
+            <a href="{% url 'admin_applications' %}"
+               class="btn">
+
+                ← Back to Applications
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer">
+
+        Job Portal &copy; 2026
+
+    </div>
+
+</body>
+</html>

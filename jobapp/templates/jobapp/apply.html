@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html>
+<head>
+    <title>Apply - Job Portal</title>
+    <link rel="stylesheet" href="{% static 'jobapp/style.css' %}">
+</head>
+
+<body>
+
+    <div class="navbar">
+        <h2>Job Portal</h2>
+
+        <div>
+            <a href="/">Jobs</a>
+
+            {% if user.is_authenticated %}
+                <form method="POST"
+                      action="{% url 'logout' %}"
+                      style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit">Logout</button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+
+
+    <div class="container">
+
+        <div class="form-card">
+
+            <h1>Apply for {{ job.title }}</h1>
+
+            <p style="text-align: center; color: #6b7280;">
+                Submit your application for this position
+            </p>
+
+            <form method="POST" enctype="multipart/form-data">
+
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label>Name</label>
+
+                    <input
+                        type="text"
+                        name="name"
+                        placeholder="Enter your full name"
+                        required
+                    >
+                </div>
+
+
+                <div class="form-group">
+                    <label>Email</label>
+
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="Enter your email address"
+                        required
+                    >
+                </div>
+
+
+                <div class="form-group">
+                    <label>Resume</label>
+
+                    <input
+                        type="file"
+                        name="resume"
+                        required
+                    >
+                </div>
+
+
+                <div class="form-group">
+                    <label>Cover Letter</label>
+
+                    <textarea
+                        name="cover_letter"
+                        rows="8"
+                        placeholder="Write your cover letter..."
+                        required
+                    ></textarea>
+                </div>
+
+
+                <button type="submit">
+                    Submit Application
+                </button>
+
+            </form>
+
+
+            <p style="margin-top: 20px;">
+                <a href="{% url 'job_detail' job.id %}">
+                    ← Back to Job
+                </a>
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer">
+        Job Portal &copy; 2026
+    </div>
+
+</body>
+</html>

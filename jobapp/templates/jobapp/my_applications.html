@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html>
+<head>
+    <title>My Applications - Job Portal</title>
+
+    <link rel="stylesheet" href="{% static 'jobapp/style.css' %}">
+</head>
+
+<body>
+
+    <div class="navbar">
+
+        <h2>Job Portal</h2>
+
+        <div>
+
+            <a href="/">
+                Jobs
+            </a>
+
+            <a href="{% url 'my_applications' %}">
+                My Applications
+            </a>
+
+            <form method="POST"
+                  action="{% url 'logout' %}"
+                  style="display: inline;">
+
+                {% csrf_token %}
+
+                <button type="submit">
+                    Logout
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <div class="container">
+
+        <h1>My Applications</h1>
+
+
+        {% for application in applications %}
+
+            <div class="job-card">
+
+                <h2>
+                    {{ application.job.title }}
+                </h2>
+
+
+                <p>
+                    <strong>Company:</strong>
+                    {{ application.job.company }}
+                </p>
+
+
+                <p>
+                    <strong>Location:</strong>
+                    {{ application.job.location }}
+                </p>
+
+
+                <p>
+                    <strong>Applied As:</strong>
+                    {{ application.name }}
+                </p>
+
+
+                <p>
+                    <strong>Email:</strong>
+                    {{ application.email }}
+                </p>
+
+
+                <p>
+                    <strong>Applied On:</strong>
+                    {{ application.applied_at|date:"d M Y, h:i A" }}
+                </p>
+
+
+                <p>
+                    <strong>Status:</strong>
+
+                    {% if application.status == "Pending" %}
+
+                        <span class="status status-pending">
+                            Pending
+                        </span>
+
+                    {% elif application.status == "Shortlisted" %}
+
+                        <span class="status status-shortlisted">
+                            Shortlisted
+                        </span>
+
+                    {% elif application.status == "Rejected" %}
+
+                        <span class="status status-rejected">
+                            Rejected
+                        </span>
+
+                    {% else %}
+
+                        <span class="status">
+                            {{ application.status }}
+                        </span>
+
+                    {% endif %}
+
+                </p>
+
+
+                <br>
+
+
+                <a href="{% url 'application_status' application.id %}"
+                   class="btn">
+
+                    View Status
+
+                </a>
+
+
+                <a href="{% url 'job_detail' application.job.id %}"
+                   class="btn">
+
+                    View Job
+
+                </a>
+
+            </div>
+
+        {% empty %}
+
+            <div class="job-card">
+
+                <h2>No Applications Yet</h2>
+
+                <p>
+                    You have not applied for any jobs yet.
+                </p>
+
+                <a href="/" class="btn">
+                    Browse Jobs
+                </a>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+
+    <div class="footer">
+
+        Job Portal &copy; 2026
+
+    </div>
+
+</body>
+</html>
