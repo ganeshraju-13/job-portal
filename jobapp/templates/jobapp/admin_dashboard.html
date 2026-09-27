@@ -1,136 +1,289 @@
 <!DOCTYPE html>
 {% load static %}
 
-<html>
-<head>
-    <title>Admin Dashboard - Job Portal</title>
+<html lang="en">
 
-    <link rel="stylesheet" href="{% static 'jobapp/style.css' %}">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard - JobPortal</title>
+
+    <link rel="stylesheet"
+          href="{% static 'jobapp/style.css' %}">
+
 </head>
 
 <body>
 
-    <div class="navbar">
 
-        <h2>Job Portal</h2>
+<!-- NAVBAR -->
+
+<nav class="navbar">
+
+    <div class="navbar-brand">
+
+        <a href="/">
+            JobPortal
+        </a>
+
+    </div>
+
+
+    <div class="navbar-links">
+
+        <a href="/">
+            Jobs
+        </a>
+
+        <a href="{% url 'admin_dashboard' %}">
+            Dashboard
+        </a>
+
+        <a href="{% url 'admin_applications' %}">
+            Applications
+        </a>
+
+
+        <form method="POST"
+              action="{% url 'logout' %}"
+              class="logout-form">
+
+            {% csrf_token %}
+
+            <button type="submit"
+                    class="logout-button">
+
+                Logout
+
+            </button>
+
+        </form>
+
+    </div>
+
+</nav>
+
+
+<!-- DASHBOARD -->
+
+<main class="dashboard-container">
+
+
+    <div class="dashboard-header">
 
         <div>
 
-            <a href="/">
-                Jobs
-            </a>
+            <p class="section-label">
+                ADMINISTRATION
+            </p>
 
-            <a href="{% url 'admin_dashboard' %}">
-                Dashboard
-            </a>
+            <h1>
+                Admin Dashboard
+            </h1>
 
-            <a href="{% url 'admin_applications' %}">
-                Applications
-            </a>
-
-            <form method="POST"
-                  action="{% url 'logout' %}"
-                  style="display: inline;">
-
-                {% csrf_token %}
-
-                <button type="submit">
-                    Logout
-                </button>
-
-            </form>
+            <p class="dashboard-description">
+                Overview of jobs and application activity.
+            </p>
 
         </div>
 
     </div>
 
 
-    <div class="container">
+    <!-- STATISTICS -->
 
-        <h1>Admin Dashboard</h1>
-
-
-        <div class="job-card">
-
-            <h2>Total Jobs</h2>
-
-            <p>
-                <strong>{{ total_jobs }}</strong>
-            </p>
-
-        </div>
+    <div class="dashboard-stats">
 
 
-        <div class="job-card">
+        <div class="dashboard-stat-card">
 
-            <h2>Total Applications</h2>
+            <div class="stat-icon">
+                J
+            </div>
 
-            <p>
-                <strong>{{ total_applications }}</strong>
-            </p>
+            <div>
 
-        </div>
+                <span>
+                    Total Jobs
+                </span>
 
+                <strong>
+                    {{ total_jobs }}
+                </strong>
 
-        <div class="job-card">
-
-            <h2>Pending Applications</h2>
-
-            <p>
-                <strong>{{ pending_applications }}</strong>
-            </p>
+            </div>
 
         </div>
 
 
-        <div class="job-card">
+        <div class="dashboard-stat-card">
 
-            <h2>Shortlisted Applications</h2>
+            <div class="stat-icon">
+                A
+            </div>
 
-            <p>
-                <strong>{{ shortlisted_applications }}</strong>
-            </p>
+            <div>
+
+                <span>
+                    Total Applications
+                </span>
+
+                <strong>
+                    {{ total_applications }}
+                </strong>
+
+            </div>
 
         </div>
 
 
-        <div class="job-card">
+        <div class="dashboard-stat-card">
 
-            <h2>Rejected Applications</h2>
+            <div class="stat-icon">
+                P
+            </div>
 
-            <p>
-                <strong>{{ rejected_applications }}</strong>
-            </p>
+            <div>
+
+                <span>
+                    Pending Applications
+                </span>
+
+                <strong>
+                    {{ pending_applications }}
+                </strong>
+
+            </div>
 
         </div>
 
 
-        <br>
+        <div class="dashboard-stat-card">
+
+            <div class="stat-icon">
+                S
+            </div>
+
+            <div>
+
+                <span>
+                    Shortlisted
+                </span>
+
+                <strong>
+                    {{ shortlisted_applications }}
+                </strong>
+
+            </div>
+
+        </div>
 
 
-        <a href="{% url 'admin_applications' %}"
-           class="btn">
+        <div class="dashboard-stat-card">
 
-            View All Applications
+            <div class="stat-icon">
+                R
+            </div>
 
-        </a>
+            <div>
 
+                <span>
+                    Rejected
+                </span>
 
-        <a href="/"
-           class="btn">
+                <strong>
+                    {{ rejected_applications }}
+                </strong>
 
-            Back to Jobs
+            </div>
 
-        </a>
+        </div>
+
 
     </div>
 
 
-    <div class="footer">
+    <!-- QUICK ACTIONS -->
 
-        Job Portal &copy; 2026
+    <section class="dashboard-actions">
+
+        <div>
+
+            <p class="section-label">
+                QUICK ACTIONS
+            </p>
+
+            <h2>
+                Manage Applications
+            </h2>
+
+            <p>
+                Review applications and update their status.
+            </p>
+
+        </div>
+
+
+        <div class="dashboard-action-buttons">
+
+            <a href="{% url 'admin_applications' %}"
+               class="dashboard-primary-button">
+
+                View All Applications →
+
+            </a>
+
+
+            <a href="/"
+               class="dashboard-secondary-button">
+
+                Back to Jobs
+
+            </a>
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+<!-- FOOTER -->
+
+<footer class="footer">
+
+    <div class="footer-content">
+
+        <div>
+
+            <h3>
+                JobPortal
+            </h3>
+
+            <p>
+                Connecting talented people with
+                great opportunities.
+            </p>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            © 2026 JobPortal. All rights reserved.
+
+        </div>
 
     </div>
+
+</footer>
+
 
 </body>
+
 </html>

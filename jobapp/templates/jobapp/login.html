@@ -1,46 +1,83 @@
 <!DOCTYPE html>
 {% load static %}
 
-<html>
+<html lang="en">
+
 <head>
-    <title>Login - Job Portal</title>
-    <link rel="stylesheet" href="{% static 'jobapp/style.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login - JobPortal</title>
+
+    <link rel="stylesheet"
+          href="{% static 'jobapp/style.css' %}">
 </head>
 
 <body>
 
-    <div class="navbar">
-        <h2>Job Portal</h2>
+    <nav class="navbar">
 
-        <div>
-            <a href="/">Jobs</a>
-            <a href="{% url 'register' %}">Register</a>
+        <div class="navbar-brand">
+            <a href="/">
+                JobPortal
+            </a>
         </div>
-    </div>
+
+        <div class="navbar-links">
+
+            <a href="/">
+                Jobs
+            </a>
+
+            <a href="{% url 'register' %}"
+               class="register-button">
+                Register
+            </a>
+
+        </div>
+
+    </nav>
 
 
-    <div class="container">
+    <main class="auth-container">
 
         <div class="auth-card">
 
-            <h1>Welcome Back</h1>
+            <div class="auth-header">
 
-            <p style="text-align: center; color: #6b7280;">
-                Login to your account to continue
-            </p>
+                <div class="auth-logo">
+                    J
+                </div>
+
+                <h1>
+                    Welcome Back
+                </h1>
+
+                <p>
+                    Login to your account to continue
+                </p>
+
+            </div>
+
 
             {% if error %}
-                <div class="error">
+
+                <div class="auth-error">
                     {{ error }}
                 </div>
+
             {% endif %}
+
 
             <form method="POST">
 
                 {% csrf_token %}
 
                 <div class="form-group">
-                    <label>Username</label>
+
+                    <label>
+                        Username
+                    </label>
 
                     <input
                         type="text"
@@ -48,10 +85,15 @@
                         placeholder="Enter your username"
                         required
                     >
+
                 </div>
 
+
                 <div class="form-group">
-                    <label>Password</label>
+
+                    <label>
+                        Password
+                    </label>
 
                     <input
                         type="password"
@@ -59,29 +101,59 @@
                         placeholder="Enter your password"
                         required
                     >
+
                 </div>
 
-                <button type="submit">
+
+                <button type="submit"
+                        class="auth-button">
                     Login
                 </button>
 
             </form>
 
-            <p style="text-align: center; margin-top: 20px;">
-                Don't have an account?
-                <a href="{% url 'register' %}">
-                    Create an account
-                </a>
-            </p>
+
+            <div class="auth-footer">
+
+                <p>
+                    Don't have an account?
+                    <a href="{% url 'register' %}">
+                        Create an account
+                    </a>
+                </p>
+
+            </div>
 
         </div>
 
-    </div>
+    </main>
 
 
-    <div class="footer">
-        Job Portal &copy; 2026
-    </div>
+    <footer class="footer">
+
+        <div class="footer-content">
+
+            <div>
+
+                <h3>
+                    JobPortal
+                </h3>
+
+                <p>
+                    Connecting talented people with
+                    great opportunities.
+                </p>
+
+            </div>
+
+            <div class="footer-bottom">
+                © 2026 JobPortal. All rights reserved.
+            </div>
+
+        </div>
+
+    </footer>
 
 </body>
+
 </html>

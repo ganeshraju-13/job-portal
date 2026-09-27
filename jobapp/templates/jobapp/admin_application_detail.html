@@ -1,167 +1,329 @@
 <!DOCTYPE html>
 {% load static %}
 
-<html>
-<head>
-    <title>Application Details - Job Portal</title>
+<html lang="en">
 
-    <link rel="stylesheet" href="{% static 'jobapp/style.css' %}">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Application Details - JobPortal</title>
+
+    <link rel="stylesheet"
+          href="{% static 'jobapp/style.css' %}">
+
 </head>
 
 <body>
 
-    <div class="navbar">
 
-        <h2>Job Portal</h2>
+<!-- NAVBAR -->
 
-        <div>
+<nav class="navbar">
 
-            <a href="/">
-                Jobs
-            </a>
+    <div class="navbar-brand">
 
-            <a href="{% url 'admin_applications' %}">
-                Applications
-            </a>
-
-            <form method="POST"
-                  action="{% url 'logout' %}"
-                  style="display: inline;">
-
-                {% csrf_token %}
-
-                <button type="submit">
-                    Logout
-                </button>
-
-            </form>
-
-        </div>
+        <a href="/">
+            JobPortal
+        </a>
 
     </div>
 
 
-    <div class="container">
+    <div class="navbar-links">
 
-        {% if messages %}
+        <a href="/">
+            Jobs
+        </a>
 
-            {% for message in messages %}
+        <a href="{% url 'admin_dashboard' %}">
+            Dashboard
+        </a>
 
-                <div class="success-message">
-                    {{ message }}
+        <a href="{% url 'admin_applications' %}">
+            Applications
+        </a>
+
+
+        <form method="POST"
+              action="{% url 'logout' %}"
+              class="logout-form">
+
+            {% csrf_token %}
+
+            <button type="submit"
+                    class="logout-button">
+
+                Logout
+
+            </button>
+
+        </form>
+
+    </div>
+
+</nav>
+
+
+<!-- APPLICATION DETAILS -->
+
+<main class="application-detail-container">
+
+
+    {% if messages %}
+
+        {% for message in messages %}
+
+            <div class="success-message">
+
+                {{ message }}
+
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+
+    <div class="application-detail-card">
+
+
+        <div class="application-detail-header">
+
+            <div class="application-detail-logo">
+
+                {{ application.job.company|first|upper }}
+
+            </div>
+
+            <div>
+
+                <p class="section-label">
+                    APPLICATION DETAILS
+                </p>
+
+                <h1>
+                    {{ application.job.title }}
+                </h1>
+
+                <p>
+                    {{ application.job.company }}
+                    ·
+                    {{ application.job.location }}
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- JOB INFORMATION -->
+
+        <section class="detail-section">
+
+            <h2>
+                Job Information
+            </h2>
+
+
+            <div class="detail-grid">
+
+                <div>
+                    <span>
+                        Job Title
+                    </span>
+
+                    <strong>
+                        {{ application.job.title }}
+                    </strong>
                 </div>
 
-            {% endfor %}
 
-        {% endif %}
-
-
-        <div class="form-card">
-
-            <h1>Application Details</h1>
-
-
-            <h2>Job Information</h2>
-
-            <p>
-                <strong>Job Title:</strong>
-                {{ application.job.title }}
-            </p>
-
-            <p>
-                <strong>Company:</strong>
-                {{ application.job.company }}
-            </p>
-
-            <p>
-                <strong>Location:</strong>
-                {{ application.job.location }}
-            </p>
-
-
-            <hr>
-
-
-            <h2>Applicant Information</h2>
-
-            <p>
-                <strong>Name:</strong>
-                {{ application.name }}
-            </p>
-
-            <p>
-                <strong>Email:</strong>
-                {{ application.email }}
-            </p>
-
-
-            <hr>
-
-
-            <h2>Application Information</h2>
-
-            <p>
-                <strong>Applied On:</strong>
-                {{ application.applied_at|date:"d M Y, h:i A" }}
-            </p>
-
-            <p>
-                <strong>Status:</strong>
-
-                {% if application.status == "Pending" %}
-
-                    <span class="status status-pending">
-                        Pending
+                <div>
+                    <span>
+                        Company
                     </span>
 
-                {% elif application.status == "Shortlisted" %}
+                    <strong>
+                        {{ application.job.company }}
+                    </strong>
+                </div>
 
-                    <span class="status status-shortlisted">
-                        Shortlisted
+
+                <div>
+                    <span>
+                        Location
                     </span>
 
-                {% elif application.status == "Rejected" %}
+                    <strong>
+                        {{ application.job.location }}
+                    </strong>
+                </div>
 
-                    <span class="status status-rejected">
-                        Rejected
+            </div>
+
+        </section>
+
+
+        <!-- APPLICANT INFORMATION -->
+
+        <section class="detail-section">
+
+            <h2>
+                Applicant Information
+            </h2>
+
+
+            <div class="detail-grid">
+
+                <div>
+                    <span>
+                        Name
                     </span>
 
-                {% endif %}
-
-            </p>
-
-
-            <hr>
+                    <strong>
+                        {{ application.name }}
+                    </strong>
+                </div>
 
 
-            <h2>Cover Letter</h2>
+                <div>
+                    <span>
+                        Email
+                    </span>
 
-            <p>
+                    <strong>
+                        {{ application.email }}
+                    </strong>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- APPLICATION INFORMATION -->
+
+        <section class="detail-section">
+
+            <h2>
+                Application Information
+            </h2>
+
+
+            <div class="detail-grid">
+
+                <div>
+                    <span>
+                        Applied On
+                    </span>
+
+                    <strong>
+                        {{ application.applied_at|date:"d M Y, h:i A" }}
+                    </strong>
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Current Status
+                    </span>
+
+
+                    {% if application.status == "Pending" %}
+
+                        <strong>
+                            <span class="status status-pending">
+                                Pending
+                            </span>
+                        </strong>
+
+                    {% elif application.status == "Shortlisted" %}
+
+                        <strong>
+                            <span class="status status-shortlisted">
+                                Shortlisted
+                            </span>
+                        </strong>
+
+                    {% elif application.status == "Rejected" %}
+
+                        <strong>
+                            <span class="status status-rejected">
+                                Rejected
+                            </span>
+                        </strong>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- COVER LETTER -->
+
+        <section class="detail-section">
+
+            <h2>
+                Cover Letter
+            </h2>
+
+            <div class="cover-letter-box">
+
                 {{ application.cover_letter }}
-            </p>
+
+            </div>
+
+        </section>
 
 
-            <hr>
+        <!-- RESUME -->
+
+        <section class="detail-section">
+
+            <h2>
+                Resume
+            </h2>
+
+            <div class="resume-box">
+
+                <div>
+
+                    <span class="resume-label">
+                        Applicant Resume
+                    </span>
+
+                    <p>
+                        View or download the uploaded resume.
+                    </p>
+
+                </div>
 
 
-            <h2>Resume</h2>
-
-            <p>
                 <a href="{{ application.resume.url }}"
-                   class="btn"
+                   class="resume-button"
                    target="_blank">
 
-                    View / Download Resume
+                    View / Download Resume →
 
                 </a>
-            </p>
+
+            </div>
+
+        </section>
 
 
-            <br>
-
+        <div class="application-detail-footer">
 
             <a href="{% url 'admin_applications' %}"
-               class="btn">
+               class="back-applications">
 
                 ← Back to Applications
 
@@ -169,14 +331,44 @@
 
         </div>
 
-    </div>
-
-
-    <div class="footer">
-
-        Job Portal &copy; 2026
 
     </div>
+
+
+</main>
+
+
+<!-- FOOTER -->
+
+<footer class="footer">
+
+    <div class="footer-content">
+
+        <div>
+
+            <h3>
+                JobPortal
+            </h3>
+
+            <p>
+                Connecting talented people with
+                great opportunities.
+            </p>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            © 2026 JobPortal. All rights reserved.
+
+        </div>
+
+    </div>
+
+</footer>
+
 
 </body>
+
 </html>

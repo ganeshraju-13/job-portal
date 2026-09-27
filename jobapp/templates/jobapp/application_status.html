@@ -1,132 +1,268 @@
 <!DOCTYPE html>
 {% load static %}
 
-<html>
-<head>
-    <title>Application Status - Job Portal</title>
+<html lang="en">
 
-    <link rel="stylesheet" href="{% static 'jobapp/style.css' %}">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Application Status - JobPortal</title>
+
+    <link rel="stylesheet"
+          href="{% static 'jobapp/style.css' %}">
+
 </head>
 
 <body>
 
-    <div class="navbar">
 
-        <h2>Job Portal</h2>
+<!-- NAVBAR -->
 
-        <div>
+<nav class="navbar">
 
-            <a href="/">
-                Jobs
-            </a>
+    <div class="navbar-brand">
 
-            <a href="{% url 'my_applications' %}">
-                My Applications
-            </a>
-
-            <form method="POST"
-                  action="{% url 'logout' %}"
-                  style="display: inline;">
-
-                {% csrf_token %}
-
-                <button type="submit">
-                    Logout
-                </button>
-
-            </form>
-
-        </div>
+        <a href="/">
+            JobPortal
+        </a>
 
     </div>
 
 
-    <div class="container">
+    <div class="navbar-links">
 
-        <div class="form-card">
+        <a href="/">
+            Jobs
+        </a>
 
-            {% if messages %}
-
-                {% for message in messages %}
-
-                    <div class="success-message">
-                        {{ message }}
-                    </div>
-
-                {% endfor %}
-
-            {% endif %}
+        <a href="{% url 'my_applications' %}">
+            My Applications
+        </a>
 
 
-            <h1>Application Status</h1>
+        <form method="POST"
+              action="{% url 'logout' %}"
+              class="logout-form">
+
+            {% csrf_token %}
+
+            <button type="submit"
+                    class="logout-button">
+
+                Logout
+
+            </button>
+
+        </form>
+
+    </div>
+
+</nav>
 
 
-            <p>
-                <strong>Job:</strong>
+<!-- STATUS PAGE -->
+
+<main class="status-page-container">
+
+
+    {% if messages %}
+
+        {% for message in messages %}
+
+            <div class="success-message">
+                {{ message }}
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+
+    <div class="status-card">
+
+
+        <div class="status-page-header">
+
+            <div class="status-logo">
+                {{ application.job.company|first|upper }}
+            </div>
+
+            <div>
+
+                <p class="section-label">
+                    APPLICATION
+                </p>
+
+                <h1>
+                    Application Status
+                </h1>
+
+            </div>
+
+        </div>
+
+
+        <div class="status-job">
+
+            <span>
+                JOB
+            </span>
+
+            <h2>
                 {{ application.job.title }}
-            </p>
-
-
-            <p>
-                <strong>Applicant:</strong>
-                {{ application.name }}
-            </p>
-
+            </h2>
 
             <p>
-                <strong>Email:</strong>
-                {{ application.email }}
+                {{ application.job.company }}
+                ·
+                {{ application.job.location }}
             </p>
 
+        </div>
 
-            <hr>
+
+        <div class="status-details">
 
 
-            <h2>Current Status</h2>
+            <div>
+
+                <span>
+                    Applicant
+                </span>
+
+                <strong>
+                    {{ application.name }}
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Email
+                </span>
+
+                <strong>
+                    {{ application.email }}
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Applied On
+                </span>
+
+                <strong>
+                    {{ application.applied_at|date:"d M Y, h:i A" }}
+                </strong>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="current-status-section">
+
+            <p>
+                CURRENT STATUS
+            </p>
 
 
             {% if application.status == "Pending" %}
 
-                <span class="status status-pending">
+                <span class="status status-pending large-status">
                     Pending
                 </span>
 
             {% elif application.status == "Shortlisted" %}
 
-                <span class="status status-shortlisted">
+                <span class="status status-shortlisted large-status">
                     Shortlisted
                 </span>
 
             {% elif application.status == "Rejected" %}
 
-                <span class="status status-rejected">
+                <span class="status status-rejected large-status">
                     Rejected
                 </span>
 
             {% else %}
 
-                <span class="status">
+                <span class="status large-status">
                     {{ application.status }}
                 </span>
 
             {% endif %}
 
+        </div>
 
-            <br><br>
 
+        <div class="status-actions">
 
-            <a href="/" class="btn">
-                ← Back to Jobs
+            <a href="{% url 'my_applications' %}"
+               class="secondary-action">
+
+                ← My Applications
+
             </a>
+
+
+            <a href="{% url 'job_detail' application.job.id %}"
+               class="primary-action">
+
+                View Job
+
+            </a>
+
+        </div>
+
+
+    </div>
+
+
+</main>
+
+
+<!-- FOOTER -->
+
+<footer class="footer">
+
+    <div class="footer-content">
+
+        <div>
+
+            <h3>
+                JobPortal
+            </h3>
+
+            <p>
+                Connecting talented people with
+                great opportunities.
+            </p>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            © 2026 JobPortal. All rights reserved.
 
         </div>
 
     </div>
 
+</footer>
 
-    <div class="footer">
-        Job Portal &copy; 2026
-    </div>
 
 </body>
+
 </html>

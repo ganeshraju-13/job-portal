@@ -1,69 +1,128 @@
 <!DOCTYPE html>
 {% load static %}
 
-<html>
+<html lang="en">
+
 <head>
-    <title>Delete Job - Job Portal</title>
-    <link rel="stylesheet" href="{% static 'jobapp/style.css' %}">
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Delete Job - JobPortal</title>
+
+    <link rel="stylesheet"
+          href="{% static 'jobapp/style.css' %}">
+
 </head>
 
 <body>
 
-    <div class="navbar">
-        <h2>Job Portal</h2>
+<nav class="navbar">
 
-        <div>
-            <a href="/">Jobs</a>
-
-            {% if user.is_authenticated %}
-                <form method="POST"
-                      action="{% url 'logout' %}"
-                      style="display: inline;">
-                    {% csrf_token %}
-                    <button type="submit">Logout</button>
-                </form>
-            {% endif %}
-        </div>
+    <div class="navbar-brand">
+        <a href="/">JobPortal</a>
     </div>
 
+    <div class="navbar-links">
 
-    <div class="container">
+        <a href="/">Jobs</a>
 
-        <div class="form-card" style="text-align: center;">
+        <a href="{% url 'admin_dashboard' %}">
+            Dashboard
+        </a>
 
-            <h1>Delete Job</h1>
+        <a href="{% url 'admin_applications' %}">
+            Applications
+        </a>
 
-            <p>
-                Are you sure you want to delete
-                <strong>{{ job.title }}</strong>?
-            </p>
+        <form method="POST"
+              action="{% url 'logout' %}"
+              class="logout-form">
 
-            <p style="color: #6b7280;">
-                This action cannot be undone.
-            </p>
+            {% csrf_token %}
 
-            <form method="POST">
-                {% csrf_token %}
+            <button type="submit"
+                    class="logout-button">
+                Logout
+            </button>
 
-                <button type="submit" class="delete-btn">
-                    Yes, Delete Job
-                </button>
-            </form>
+        </form>
 
-            <br>
+    </div>
 
-            <a href="{% url 'job_detail' job.id %}">
+</nav>
+
+
+<main class="delete-job-container">
+
+    <div class="delete-job-card">
+
+        <div class="delete-icon">
+            !
+        </div>
+
+        <p class="section-label">
+            ADMINISTRATION
+        </p>
+
+        <h1>Delete Job</h1>
+
+        <p class="delete-question">
+            Are you sure you want to delete
+            <strong>{{ job.title }}</strong>?
+        </p>
+
+        <p class="delete-warning">
+            This action cannot be undone.
+        </p>
+
+
+        <form method="POST"
+              class="delete-job-form">
+
+            {% csrf_token %}
+
+            <button type="submit"
+                    class="confirm-delete-button">
+                Yes, Delete Job
+            </button>
+
+            <a href="{% url 'job_detail' job.id %}"
+               class="cancel-delete-button">
                 Cancel
             </a>
 
+        </form>
+
+    </div>
+
+</main>
+
+
+<footer class="footer">
+
+    <div class="footer-content">
+
+        <div>
+
+            <h3>JobPortal</h3>
+
+            <p>
+                Connecting talented people with great opportunities.
+            </p>
+
+        </div>
+
+        <div class="footer-bottom">
+            © 2026 JobPortal. All rights reserved.
         </div>
 
     </div>
 
-
-    <div class="footer">
-        Job Portal &copy; 2026
-    </div>
+</footer>
 
 </body>
+
 </html>

@@ -1,168 +1,303 @@
 <!DOCTYPE html>
 {% load static %}
 
-<html>
-<head>
-    <title>My Applications - Job Portal</title>
+<html lang="en">
 
-    <link rel="stylesheet" href="{% static 'jobapp/style.css' %}">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>My Applications - JobPortal</title>
+
+    <link rel="stylesheet"
+          href="{% static 'jobapp/style.css' %}">
+
 </head>
 
 <body>
 
-    <div class="navbar">
 
-        <h2>Job Portal</h2>
+<!-- NAVBAR -->
+
+<nav class="navbar">
+
+    <div class="navbar-brand">
+
+        <a href="/">
+            JobPortal
+        </a>
+
+    </div>
+
+
+    <div class="navbar-links">
+
+        <a href="/">
+            Jobs
+        </a>
+
+        <a href="{% url 'my_applications' %}">
+            My Applications
+        </a>
+
+
+        <form method="POST"
+              action="{% url 'logout' %}"
+              class="logout-form">
+
+            {% csrf_token %}
+
+            <button type="submit"
+                    class="logout-button">
+
+                Logout
+
+            </button>
+
+        </form>
+
+    </div>
+
+</nav>
+
+
+<!-- MAIN CONTENT -->
+
+<main class="my-applications-container">
+
+
+    <div class="my-applications-header">
 
         <div>
 
-            <a href="/">
-                Jobs
-            </a>
+            <p class="section-label">
+                YOUR ACTIVITY
+            </p>
 
-            <a href="{% url 'my_applications' %}">
+            <h1>
                 My Applications
-            </a>
+            </h1>
 
-            <form method="POST"
-                  action="{% url 'logout' %}"
-                  style="display: inline;">
+            <p class="my-applications-description">
+                Track the jobs you have applied for.
+            </p>
 
-                {% csrf_token %}
+        </div>
 
-                <button type="submit">
-                    Logout
-                </button>
 
-            </form>
+        <div class="application-count">
+
+            {{ applications|length }} Applications
 
         </div>
 
     </div>
 
 
-    <div class="container">
-
-        <h1>My Applications</h1>
+    <div class="my-application-list">
 
 
         {% for application in applications %}
 
-            <div class="job-card">
 
-                <h2>
-                    {{ application.job.title }}
-                </h2>
+            <article class="my-application-card">
 
 
-                <p>
-                    <strong>Company:</strong>
-                    {{ application.job.company }}
-                </p>
+                <div class="my-application-header">
 
 
-                <p>
-                    <strong>Location:</strong>
-                    {{ application.job.location }}
-                </p>
+                    <div class="my-company-logo">
+
+                        {{ application.job.company|first|upper }}
+
+                    </div>
 
 
-                <p>
-                    <strong>Applied As:</strong>
-                    {{ application.name }}
-                </p>
+                    <div class="my-job-info">
+
+                        <h2>
+                            {{ application.job.title }}
+                        </h2>
+
+                        <p>
+                            {{ application.job.company }}
+                            ·
+                            {{ application.job.location }}
+                        </p>
+
+                    </div>
 
 
-                <p>
-                    <strong>Email:</strong>
-                    {{ application.email }}
-                </p>
+                    <div>
+
+                        {% if application.status == "Pending" %}
+
+                            <span class="status status-pending">
+                                Pending
+                            </span>
+
+                        {% elif application.status == "Shortlisted" %}
+
+                            <span class="status status-shortlisted">
+                                Shortlisted
+                            </span>
+
+                        {% elif application.status == "Rejected" %}
+
+                            <span class="status status-rejected">
+                                Rejected
+                            </span>
+
+                        {% else %}
+
+                            <span class="status">
+                                {{ application.status }}
+                            </span>
+
+                        {% endif %}
+
+                    </div>
 
 
-                <p>
-                    <strong>Applied On:</strong>
-                    {{ application.applied_at|date:"d M Y, h:i A" }}
-                </p>
+                </div>
 
 
-                <p>
-                    <strong>Status:</strong>
+                <div class="my-application-details">
 
-                    {% if application.status == "Pending" %}
 
-                        <span class="status status-pending">
-                            Pending
+                    <div>
+
+                        <span>
+                            Applied As
                         </span>
 
-                    {% elif application.status == "Shortlisted" %}
+                        <strong>
+                            {{ application.name }}
+                        </strong>
 
-                        <span class="status status-shortlisted">
-                            Shortlisted
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Email
                         </span>
 
-                    {% elif application.status == "Rejected" %}
+                        <strong>
+                            {{ application.email }}
+                        </strong>
 
-                        <span class="status status-rejected">
-                            Rejected
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Applied On
                         </span>
 
-                    {% else %}
+                        <strong>
+                            {{ application.applied_at|date:"d M Y, h:i A" }}
+                        </strong>
 
-                        <span class="status">
-                            {{ application.status }}
-                        </span>
-
-                    {% endif %}
-
-                </p>
+                    </div>
 
 
-                <br>
+                </div>
 
 
-                <a href="{% url 'application_status' application.id %}"
-                   class="btn">
-
-                    View Status
-
-                </a>
+                <div class="my-application-footer">
 
 
-                <a href="{% url 'job_detail' application.job.id %}"
-                   class="btn">
+                    <a href="{% url 'application_status' application.id %}"
+                       class="view-application">
 
-                    View Job
+                        View Status →
 
-                </a>
+                    </a>
 
-            </div>
+
+                    <a href="{% url 'job_detail' application.job.id %}"
+                       class="view-job-button">
+
+                        View Job
+
+                    </a>
+
+
+                </div>
+
+
+            </article>
+
 
         {% empty %}
 
-            <div class="job-card">
 
-                <h2>No Applications Yet</h2>
+            <div class="empty-state">
+
+                <h3>
+                    No Applications Yet
+                </h3>
 
                 <p>
                     You have not applied for any jobs yet.
                 </p>
 
-                <a href="/" class="btn">
+                <a href="/"
+                   class="browse-jobs-button">
+
                     Browse Jobs
+
                 </a>
 
             </div>
 
+
         {% endfor %}
 
-    </div>
-
-
-    <div class="footer">
-
-        Job Portal &copy; 2026
 
     </div>
+
+
+</main>
+
+
+<!-- FOOTER -->
+
+<footer class="footer">
+
+    <div class="footer-content">
+
+        <div>
+
+            <h3>
+                JobPortal
+            </h3>
+
+            <p>
+                Connecting talented people with
+                great opportunities.
+            </p>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            © 2026 JobPortal. All rights reserved.
+
+        </div>
+
+    </div>
+
+</footer>
+
 
 </body>
+
 </html>

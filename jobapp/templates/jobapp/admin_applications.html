@@ -1,206 +1,310 @@
 <!DOCTYPE html>
 {% load static %}
 
-<html>
-<head>
-    <title>All Applications - Job Portal</title>
+<html lang="en">
 
-    <link rel="stylesheet" href="{% static 'jobapp/style.css' %}">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Applications - JobPortal</title>
+
+    <link rel="stylesheet"
+          href="{% static 'jobapp/style.css' %}">
+
 </head>
 
 <body>
 
-    <div class="navbar">
 
-        <h2>Job Portal</h2>
+<!-- NAVBAR -->
+
+<nav class="navbar">
+
+    <div class="navbar-brand">
+
+        <a href="/">
+            JobPortal
+        </a>
+
+    </div>
+
+
+    <div class="navbar-links">
+
+        <a href="/">
+            Jobs
+        </a>
+
+        <a href="{% url 'admin_dashboard' %}">
+            Dashboard
+        </a>
+
+        <a href="{% url 'admin_applications' %}">
+            Applications
+        </a>
+
+
+        <form method="POST"
+              action="{% url 'logout' %}"
+              class="logout-form">
+
+            {% csrf_token %}
+
+            <button type="submit"
+                    class="logout-button">
+
+                Logout
+
+            </button>
+
+        </form>
+
+    </div>
+
+</nav>
+
+
+<!-- MAIN CONTENT -->
+
+<main class="admin-page-container">
+
+
+    {% if messages %}
+
+        {% for message in messages %}
+
+            <div class="success-message">
+
+                {{ message }}
+
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+
+    <div class="admin-page-header">
 
         <div>
 
-            <a href="/">
-                Jobs
-            </a>
+            <p class="section-label">
+                ADMINISTRATION
+            </p>
 
-            <a href="{% url 'admin_applications' %}">
-                Applications
-            </a>
+            <h1>
+                All Applications
+            </h1>
 
-            <form method="POST"
-                  action="{% url 'logout' %}"
-                  style="display: inline;">
+            <p class="admin-page-description">
+                Review and manage job applications.
+            </p>
 
-                {% csrf_token %}
+        </div>
 
-                <button type="submit">
-                    Logout
-                </button>
+        <div class="application-count">
 
-            </form>
+            {{ applications|length }} Applications
 
         </div>
 
     </div>
 
 
-    <div class="container">
+    <!-- APPLICATIONS -->
 
-        {% if messages %}
-
-            {% for message in messages %}
-
-                <div class="success-message">
-                    {{ message }}
-                </div>
-
-            {% endfor %}
-
-        {% endif %}
-
-
-        <h1>All Applications</h1>
+    <div class="application-list">
 
 
         {% for application in applications %}
 
-            <div class="job-card">
 
-                <h2>
-                    {{ application.job.title }}
-                </h2>
+            <article class="application-card">
 
 
-                <p>
-                    <strong>Applicant:</strong>
-                    {{ application.name }}
-                </p>
+                <div class="application-card-header">
 
 
-                <p>
-                    <strong>Email:</strong>
-                    {{ application.email }}
-                </p>
+                    <div class="application-company-logo">
+
+                        {{ application.job.company|first|upper }}
+
+                    </div>
 
 
-                <p>
-                    <strong>Company:</strong>
-                    {{ application.job.company }}
-                </p>
+                    <div class="application-job-info">
+
+                        <h2>
+                            {{ application.job.title }}
+                        </h2>
+
+                        <p>
+                            {{ application.job.company }}
+                            ·
+                            {{ application.job.location }}
+                        </p>
+
+                    </div>
 
 
-                <p>
-                    <strong>Location:</strong>
-                    {{ application.job.location }}
-                </p>
+                    <div class="application-status">
+
+                        {% if application.status == "Pending" %}
+
+                            <span class="status status-pending">
+                                Pending
+                            </span>
+
+                        {% elif application.status == "Shortlisted" %}
+
+                            <span class="status status-shortlisted">
+                                Shortlisted
+                            </span>
+
+                        {% elif application.status == "Rejected" %}
+
+                            <span class="status status-rejected">
+                                Rejected
+                            </span>
+
+                        {% else %}
+
+                            <span class="status">
+                                {{ application.status }}
+                            </span>
+
+                        {% endif %}
+
+                    </div>
 
 
-                <p>
-                    <strong>Applied On:</strong>
-                    {{ application.applied_at|date:"d M Y, h:i A" }}
-                </p>
+                </div>
 
 
-                <p>
-                    <strong>Current Status:</strong>
+                <div class="application-details">
 
-                    {% if application.status == "Pending" %}
 
-                        <span class="status status-pending">
-                            Pending
+                    <div class="application-detail-item">
+
+                        <span>
+                            Applicant
                         </span>
 
-                    {% elif application.status == "Shortlisted" %}
+                        <strong>
+                            {{ application.name }}
+                        </strong>
 
-                        <span class="status status-shortlisted">
-                            Shortlisted
+                    </div>
+
+
+                    <div class="application-detail-item">
+
+                        <span>
+                            Email
                         </span>
 
-                    {% elif application.status == "Rejected" %}
+                        <strong>
+                            {{ application.email }}
+                        </strong>
 
-                        <span class="status status-rejected">
-                            Rejected
+                    </div>
+
+
+                    <div class="application-detail-item">
+
+                        <span>
+                            Applied On
                         </span>
 
-                    {% else %}
+                        <strong>
+                            {{ application.applied_at|date:"d M Y, h:i A" }}
+                        </strong>
 
-                        <span class="status">
-                            {{ application.status }}
-                        </span>
-
-                    {% endif %}
-
-                </p>
+                    </div>
 
 
-                <br>
+                </div>
 
 
-                <a href="{% url 'admin_application_detail' application.id %}"
-                   class="btn">
-
-                    View Application Details
-
-                </a>
+                <div class="application-card-footer">
 
 
-                <br><br>
+                    <a href="{% url 'admin_application_detail' application.id %}"
+                       class="view-application">
+
+                        View Application Details →
+
+                    </a>
 
 
-                <form method="POST"
-                      action="{% url 'update_application_status' application.id %}">
+                    <form method="POST"
+                          action="{% url 'update_application_status' application.id %}"
+                          class="status-form">
 
-                    {% csrf_token %}
-
-                    <label>
-                        <strong>Change Status:</strong>
-                    </label>
+                        {% csrf_token %}
 
 
-                    <select name="status">
-
-                        <option value="Pending"
-                            {% if application.status == "Pending" %}
-                                selected
-                            {% endif %}>
-
-                            Pending
-
-                        </option>
+                        <label>
+                            Change Status
+                        </label>
 
 
-                        <option value="Shortlisted"
-                            {% if application.status == "Shortlisted" %}
-                                selected
-                            {% endif %}>
+                        <select name="status">
 
-                            Shortlisted
-
-                        </option>
-
-
-                        <option value="Rejected"
-                            {% if application.status == "Rejected" %}
-                                selected
-                            {% endif %}>
-
-                            Rejected
-
-                        </option>
-
-                    </select>
+                            <option value="Pending"
+                                {% if application.status == "Pending" %}
+                                    selected
+                                {% endif %}>
+                                Pending
+                            </option>
 
 
-                    <button type="submit">
-                        Update Status
-                    </button>
+                            <option value="Shortlisted"
+                                {% if application.status == "Shortlisted" %}
+                                    selected
+                                {% endif %}>
+                                Shortlisted
+                            </option>
 
-                </form>
 
-            </div>
+                            <option value="Rejected"
+                                {% if application.status == "Rejected" %}
+                                    selected
+                                {% endif %}>
+                                Rejected
+                            </option>
+
+                        </select>
+
+
+                        <button type="submit"
+                                class="update-status-button">
+
+                            Update
+
+                        </button>
+
+                    </form>
+
+
+                </div>
+
+
+            </article>
+
 
         {% empty %}
 
-            <div class="job-card">
 
-                <h2>No Applications</h2>
+            <div class="empty-state">
+
+                <h3>
+                    No Applications
+                </h3>
 
                 <p>
                     There are currently no job applications.
@@ -208,16 +312,47 @@
 
             </div>
 
+
         {% endfor %}
 
-    </div>
-
-
-    <div class="footer">
-
-        Job Portal &copy; 2026
 
     </div>
+
+
+</main>
+
+
+<!-- FOOTER -->
+
+<footer class="footer">
+
+    <div class="footer-content">
+
+        <div>
+
+            <h3>
+                JobPortal
+            </h3>
+
+            <p>
+                Connecting talented people with
+                great opportunities.
+            </p>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            © 2026 JobPortal. All rights reserved.
+
+        </div>
+
+    </div>
+
+</footer>
+
 
 </body>
+
 </html>
